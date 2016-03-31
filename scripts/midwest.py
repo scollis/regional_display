@@ -1,3 +1,5 @@
+from matplotlib import use
+use('agg')
 import os
 import urllib2
 import pyart
@@ -6,9 +8,10 @@ import matplotlib.pyplot as plt
 from netCDF4 import num2date, date2num
 import time
 
+
 def get_88d(radarID):
     d_fmt = "%Y-%m-%d %H:%M"
-    dout_fmt = "%Y-%m-%d_%H:%M"        
+    dout_fmt = "%Y-%m-%d_%H:%M"
     SERVICE = "http://nomads.ncep.noaa.gov/pub/data/nccf/radar/nexrad_level2"
     nexurl = '%s/%s/'%(SERVICE, radarID)
     response = urllib2.urlopen("%s%s"%(nexurl, "dir.list"))
@@ -21,7 +24,7 @@ def get_88d(radarID):
     #print list88D
     print("%s%s"%(nexurl,list88D[-3].split(" ")[1]))
     data = urllib2.urlopen("%s%s"%(nexurl,list88D[-3].split(" ")[1]))
-    
+
     with open("latest88D.bz", "wb") as code:
         code.write(data.read())
     return pyart.io.read_nexrad_archive("latest88D.bz")
@@ -87,8 +90,8 @@ def regional_display(radar_names, odir):
         plt.text(xcf+2000.,ycf+2000.,goods[i])
     display.basemap.drawcounties()
     display.basemap.drawrivers()
-    display.basemap.drawmapscale(-88., 37.55, -88., 37.55, 100, 
-                                 barstyle='fancy', fontcolor='k', 
+    display.basemap.drawmapscale(-88., 37.55, -88., 37.55, 100,
+                                 barstyle='fancy', fontcolor='k',
                                  fillcolor1='b', fillcolor2='k')
     plt.savefig(odir + 'regional_reflectivity_'+sstr+'.png')
     plt.close(figme)
@@ -108,17 +111,17 @@ def regional_display(radar_names, odir):
 
     display.basemap.drawcounties()
     display.basemap.drawrivers()
-    display.basemap.drawmapscale(-88., 37.55, -88., 37.55, 100, 
-                                 barstyle='fancy', fontcolor='k', 
+    display.basemap.drawmapscale(-88., 37.55, -88., 37.55, 100,
+                                 barstyle='fancy', fontcolor='k',
                                  fillcolor1='b', fillcolor2='k')
     plt.savefig(odir + 'regional_rainfall_'+sstr+'.png')
     del myradars
     plt.close(figme)
 
 if __name__ == '__main__':
-    radar_names = ('KLOT', 'KILX', 'KDVN', 
-               'KMKX', 'KGRB', 'KIWX', 
-               'KIND', 'KLSX', 'KDMX', 
+    radar_names = ('KLOT', 'KILX', 'KDVN',
+               'KMKX', 'KGRB', 'KIWX',
+               'KIND', 'KLSX', 'KDMX',
                'KLVX', 'KGRR', 'KDTX',
                'KCLE', 'KMPX', 'KARX',
                'KDMX', 'KSGF', 'KILN',
