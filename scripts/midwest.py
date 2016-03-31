@@ -1,3 +1,5 @@
+from matplotlib import use
+use('agg')
 import os
 import urllib2
 import pyart
@@ -60,8 +62,8 @@ def regional_display(radar_names, odir):
         gatefilters.append(gatefilter)
     #gatefilter.exclude_below('cross_correlation_ratio', 0.75)
     grid = pyart.map.grid_from_radars(
-         myradars, grid_shape=(1, 601, 601),
-        grid_limits=((0, 0),(-600000, 600000), (-700000, 500000)),
+         myradars, grid_shape=(1, 601, 701),
+        grid_limits=((0, 0),(-600000, 600000), (-700000, 700000)),
         fields=['reflectivity', 'rain_z'], gridding_algo="map_gates_to_grid",
         weighting_function='BARNES', gatefilters = gatefilters)
     dts = num2date(grid.axes['time']['data'], grid.axes['time']['units'])
@@ -90,7 +92,7 @@ def regional_display(radar_names, odir):
     display.basemap.drawmapscale(-88., 37.55, -88., 37.55, 100, 
                                  barstyle='fancy', fontcolor='k', 
                                  fillcolor1='b', fillcolor2='k')
-    plt.savefig(odir + 'regional_reflectivity_'+sstr+'.png')
+    plt.savefig(odir + 'regional_reflectivity_'+sstr+'.png', dpi = 300)
     plt.close(figme)
     figme = plt.figure(figsize = [15,15])
     display = pyart.graph.GridMapDisplay(grid)
@@ -111,7 +113,7 @@ def regional_display(radar_names, odir):
     display.basemap.drawmapscale(-88., 37.55, -88., 37.55, 100, 
                                  barstyle='fancy', fontcolor='k', 
                                  fillcolor1='b', fillcolor2='k')
-    plt.savefig(odir + 'regional_rainfall_'+sstr+'.png')
+    plt.savefig(odir + 'regional_rainfall_'+sstr+'.png', dpi = 300)
     del myradars
     plt.close(figme)
 
